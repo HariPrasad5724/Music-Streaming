@@ -27,15 +27,28 @@ while True:
     client_socket.send(x.encode())
     ch = int(client_socket.recv(1024).decode())
     if ch == 0:
-        print("!!! Choose a legal song name !!!")
+        print("Choose a legal song name!")
         continue
     if ch == 1:
-        print(" Track !!  ", x, "  !! Playing")
+        print("Track ", x, "is Playing !!")
         data = "1"
         while data != "":
-            data = client_socket.recv(1024)
-            stream.write(data)
-
+            try:
+                stream.write(data)
+                data = client_socket.recv(1024)
+            except KeyboardInterrupt:
+                print("Song Paused!")
+                stream.stop_stream()
+                input_state = input("Enter R to Resume & E to Exit: ")
+                if input_state.upper() == "R":
+                    print("Song resumes!")
+                    stream.start_stream()
+                    continue
+                if input_state.upper() == "E":
+                    print("Streaming cancelled by the user!")
+                    stream.close()
+                    p.terminate()
+                    continue
 stream.stop_stream()
 stream.close()
 p.terminate()
