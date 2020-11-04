@@ -10,21 +10,22 @@ def clientthread(conn, address):
     while True:
 
         resource = os.listdir("./resource")
-        ss = "\n\n\n\n \t\t Media Player \n"
+        ss = "\n\t\t Song Player \n"
         for i in range(len(resource)):
             if i % 2 == 0:
                 ss += "\n"
             resource[i] = resource[i][:-4]
-            ss = ss+"\t"+resource[i]+"\t"
+            ss = ss+"\t\t\t\t"+resource[i]+"\t\t\t\t"
         conn.send(ss.encode())
         x = conn.recv(1024).decode()
         for i in resource:
             if x.lower() == i.lower():
-                print("song found")
+                print("Lets start to stream!!")
                 conn.send("1".encode())
                 x = i
                 break
         else:
+            print("Hurray!  Select the available song!")
             conn.send("0".encode())
             continue
         x = "./resource/"+x+".wav"

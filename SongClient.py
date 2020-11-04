@@ -18,6 +18,8 @@ stream = p.open(format=FORMAT,
                 rate=RATE,
                 output=True,
                 frames_per_buffer=CHUNK)
+print("********Choose the song which is listed below********")
+print("\n")
 while True:
     res = client_socket.recv(1024).decode()
     print(res)
@@ -27,7 +29,7 @@ while True:
     client_socket.send(x.encode())
     ch = int(client_socket.recv(1024).decode())
     if ch == 0:
-        print("Choose a legal song name!")
+        print("Choose the available song name!")
         continue
     if ch == 1:
         print("Track ", x, "is Playing !!")
